@@ -15,14 +15,24 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: green;
+}
+
+.main-component-line {
+  width: 70%;
+  border-color: #eeeeee -moz-use-text-color #ffffff;
+  border-width: 1px 0;
+  margin: 18px 0;
 }
 
 .main-component__footer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   color: #fff;
   background-color: #343a40;
+}
+
+.main-component__footer div {
+  margin: 0 5%;
 }

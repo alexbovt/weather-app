@@ -14,11 +14,12 @@ const Main: React.SFC = () => {
       </header>
       <div className="main-component__content container">
         <SearchPanel />
+        <hr className={"main-component-line"} />
         <Weather />
       </div>
       <footer className={"main-component__footer"}>
-        <div>Social Media</div>
         <div> 2019 </div>
+        <div>Social Media Links</div>
       </footer>
     </div>
   );
