@@ -19,7 +19,14 @@ const Main: React.SFC = () => {
       </div>
       <footer className={"main-component__footer"}>
         <div> 2019 </div>
-        <div>Social Media Links</div>
+        <div className={"main-component__footer-links"}>
+          <a href="https://github.com/alexbovt" target="_blank">
+            <i className="fa fa-github" aria-hidden="true" />
+          </a>
+          <a href="https://www.linkedin.com/in/oleksii-bovt/" target="_blank">
+            <i className="fa fa-linkedin" aria-hidden="true" />
+          </a>
+        </div>
       </footer>
     </div>
   );

@@ -4,7 +4,7 @@ import {
   WeatherErrorPayload,
   LocationSuccessPayload,
   LocationErrorPayload
-} from "../config/ActionPayloads";
+} from "../actions/ActionPayloads";
 
 export interface WeatherStateShape {
   location: string;

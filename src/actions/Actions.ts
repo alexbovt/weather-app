@@ -4,7 +4,7 @@ import {
   LocationErrorPayload,
   WeatherSuccessPayload,
   WeatherErrorPayload
-} from "../config/ActionPayloads";
+} from "./ActionPayloads";
 import {
   getLocationByLatLanFromGoogleMapsMock,
   getLocationByCityFromGoogleMapsMock
