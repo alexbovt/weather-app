@@ -1,18 +1,24 @@
 import { Action } from "redux";
+import { Weather } from "../reducers/WeatherReducer";
 
 export type ActionTypes =
-  | "GETTING_WEATHER_PENDING"
+  | "GETTING_PENDING"
   | "GETTING_WEATHER_SUCCESS"
-  | "GETTING_WEATHER_ERROR";
+  | "GETTING_WEATHER_ERROR"
+  | "GETTING_LOCATION_SUCCESS"
+  | "GETTING_LOCATION_ERROR";
 
 export type SimpleAction = Action<ActionTypes>;
 
-export interface gettingWeatherPendingPayload extends SimpleAction {
-  city: string;
+export interface WeatherSuccessPayload extends SimpleAction {
+  weather: Weather;
 }
-export interface gettingWeatherSuccessPayload extends SimpleAction {
-  weather: string;
+export interface WeatherErrorPayload extends SimpleAction {
+  error: string;
 }
-export interface gettingWeatherErrorPayload extends SimpleAction {
+export interface LocationSuccessPayload extends SimpleAction {
+  location: string;
+}
+export interface LocationErrorPayload extends SimpleAction {
   error: string;
 }
