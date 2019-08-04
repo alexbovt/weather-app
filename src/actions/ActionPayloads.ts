@@ -5,8 +5,8 @@ export type ActionTypes =
   | "GETTING_PENDING"
   | "GETTING_WEATHER_SUCCESS"
   | "GETTING_WEATHER_ERROR"
-  | "GETTING_LOCATION_SUCCESS"
-  | "GETTING_LOCATION_ERROR";
+  | "GETTING_CITY_SUCCESS"
+  | "GETTING_CITY_ERROR";
 
 export type SimpleAction = Action<ActionTypes>;
 
@@ -16,9 +16,9 @@ export interface WeatherSuccessPayload extends SimpleAction {
 export interface WeatherErrorPayload extends SimpleAction {
   error: string;
 }
-export interface LocationSuccessPayload extends SimpleAction {
-  location: string;
+export interface CitySuccessPayload extends SimpleAction {
+  city: string;
 }
-export interface LocationErrorPayload extends SimpleAction {
+export interface CityErrorPayload extends SimpleAction {
   error: string;
 }

@@ -2,25 +2,37 @@ import {
   SimpleAction,
   WeatherSuccessPayload,
   WeatherErrorPayload,
-  LocationSuccessPayload,
-  LocationErrorPayload
+  CitySuccessPayload,
+  CityErrorPayload
 } from "../actions/ActionPayloads";
+import { template } from "@babel/core";
 
 export interface WeatherStateShape {
-  location: string;
+  city: string;
   pending: boolean;
-  weather: Weather;
+  weather?: Weather;
   error: string;
 }
 
 export interface Weather {
-  temp: number;
+  sys?: { country?: string; sunrise?: number; sunset?: number };
+  main?: {
+    humidity?: number;
+    pressure?: number;
+    temp?: number;
+    temp_max?: number;
+    temp_min?: number;
+  };
+  wind?: { speed?: number; deg?: 230 };
+  visibility?: number;
+  timezone?: number;
+  weather?: { main?: string; icon?: string };
 }
 
 const initialState: WeatherStateShape = {
-  location: "",
+  city: "",
   pending: false,
-  weather: { temp: 0 },
+  weather: {},
   error: ""
 };
 
@@ -35,18 +47,16 @@ export const WeatherReducer = (
         pending: true
       };
     }
-    case "GETTING_LOCATION_SUCCESS": {
+    case "GETTING_CITY_SUCCESS": {
       return {
         ...state,
-        pending: false,
-        location: (action as LocationSuccessPayload).location
+        city: (action as CitySuccessPayload).city
       };
     }
-    case "GETTING_LOCATION_ERROR": {
+    case "GETTING_CITY_ERROR": {
       return {
         ...state,
-        pending: false,
-        error: (action as LocationErrorPayload).error
+        error: (action as CityErrorPayload).error
       };
     }
     case "GETTING_WEATHER_SUCCESS": {

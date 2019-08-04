@@ -1,23 +1,19 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { WeatherStateShape } from "../../reducers/WeatherReducer";
-import {
-  LocationByGeo,
-  getLocation,
-  LocationByCity
-} from "../../actions/Actions";
 
 import "./SearchPanlel.css";
+import { getWeatherByGeo, getWeatherByCity } from "../../actions/Actions";
 
 interface SearchPanelProps {
-  location: string;
+  city: string;
   pending: boolean;
   onGetLocation: (latitude: number, longitude: number) => void;
   onSearch: (term: string) => void;
 }
 
 const SearchPanel: React.SFC<SearchPanelProps> = ({
-  location,
+  city,
   pending,
   onGetLocation,
   onSearch
@@ -33,7 +29,7 @@ const SearchPanel: React.SFC<SearchPanelProps> = ({
     });
   }, []);
 
-  useEffect(() => setTerm(location), [location]);
+  useEffect(() => setTerm(city), [city]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void =>
     setTerm(e.target.value);
@@ -58,16 +54,15 @@ const SearchPanel: React.SFC<SearchPanelProps> = ({
   );
 };
 
-const mapStateToProps = ({ location, pending }: WeatherStateShape) => ({
+const mapStateToProps = ({ city, pending }: WeatherStateShape) => ({
   pending,
-  location
+  city
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   onGetLocation: (latitude: number, longitude: number) =>
-    dispatch(getLocation({ latitude, longitude } as LocationByGeo)),
-  onSearch: (term: string) =>
-    dispatch(getLocation({ city: term } as LocationByCity))
+    dispatch(getWeatherByGeo(latitude, longitude)),
+  onSearch: (term: string) => dispatch(getWeatherByCity(term))
 });
 
 export default connect(

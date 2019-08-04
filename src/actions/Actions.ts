@@ -1,16 +1,15 @@
 import { Dispatch } from "redux";
 import {
-  LocationSuccessPayload,
-  LocationErrorPayload,
   WeatherSuccessPayload,
-  WeatherErrorPayload
+  WeatherErrorPayload,
+  CitySuccessPayload,
+  CityErrorPayload
 } from "./ActionPayloads";
 import {
-  getLocationByLatLanFromGoogleMapsMock,
-  getLocationByCityFromGoogleMapsMock
-} from "../services/GoogleMapsAPIService";
+  getWeatherByCityName,
+  getWeatherByGeolocation
+} from "./../services/WeatherAPIService";
 import { Weather } from "../reducers/WeatherReducer";
-import { getWeatherFromApiMock } from "../services/WeatherAPIService";
 
 export type LocationByCity = {
   city: string;
@@ -25,16 +24,6 @@ const getPending = () => ({
   type: "GETTING_PENDING"
 });
 
-const getLocationSuccess = (location: string): LocationSuccessPayload => ({
-  type: "GETTING_LOCATION_SUCCESS",
-  location
-});
-
-const getLocationError = (error: string): LocationErrorPayload => ({
-  type: "GETTING_LOCATION_ERROR",
-  error
-});
-
 const getWeatherSuccess = (weather: Weather): WeatherSuccessPayload => ({
   type: "GETTING_WEATHER_SUCCESS",
   weather
@@ -45,31 +34,78 @@ const getWeatherError = (error: string): WeatherErrorPayload => ({
   error
 });
 
-export const getWeather = (location: string) => async (dispatch: Dispatch) => {
+const getCitySuccess = (city: string): CitySuccessPayload => ({
+  type: "GETTING_CITY_SUCCESS",
+  city
+});
+
+const getCityError = (error: string): CityErrorPayload => ({
+  type: "GETTING_CITY_ERROR",
+  error
+});
+
+export const getWeatherByCity = (city: string) => async (
+  dispatch: Dispatch
+) => {
   dispatch(getPending());
   try {
-    const response = await getWeatherFromApiMock(location);
-    dispatch(getWeatherSuccess(response));
+    const response = await getWeatherByCityName(city);
+    if (response.data) {
+      const {
+        name,
+        sys: { country, sunrise, sunset },
+        main: { temp, pressure, temp_max, temp_min, humidity },
+        wind: { speed, deg },
+        visibility,
+        timezone,
+        weather: { main, icon }
+      } = await response.data;
+
+      const weather = {
+        sys: { country, sunrise, sunset },
+        main: { temp, pressure, temp_max, temp_min, humidity },
+        wind: { speed, deg },
+        visibility,
+        timezone,
+        weather: { main, icon }
+      } as Weather;
+      dispatch(getCitySuccess(`${name}, ${country}`));
+      dispatch(getWeatherSuccess(weather));
+    } else {
+      throw new Error("Something was wrong");
+    }
   } catch (error) {
     dispatch(getWeatherError(error));
   }
 };
 
-export const getLocation = (data: LocationByCity | LocationByGeo) => async (
-  dispatch: Dispatch<any>
+export const getWeatherByGeo = (lat: number, lan: number) => async (
+  dispatch: Dispatch
 ) => {
   dispatch(getPending());
   try {
-    const response = (data as LocationByCity).city
-      ? await getLocationByCityFromGoogleMapsMock((data as LocationByCity).city)
-      : await getLocationByLatLanFromGoogleMapsMock(
-          (data as LocationByGeo).latitude,
-          (data as LocationByGeo).longitude
-        );
-    const location = await response.location;
-    dispatch(getLocationSuccess(location));
-    dispatch(getWeather(location));
+    const response = await getWeatherByGeolocation(lat, lan);
+    const {
+      name,
+      sys: { country, sunrise, sunset },
+      main: { temp, pressure, temp_max, temp_min, humidity },
+      wind: { speed, deg },
+      visibility,
+      timezone,
+      weather: { main, icon }
+    } = await response.data;
+
+    const weather = {
+      sys: { country, sunrise, sunset },
+      main: { temp, pressure, temp_max, temp_min, humidity },
+      wind: { speed, deg },
+      visibility,
+      timezone,
+      weather: { main, icon }
+    } as Weather;
+    dispatch(getCitySuccess(`${name}, ${country}`));
+    dispatch(getWeatherSuccess(weather));
   } catch (error) {
-    dispatch(getLocationError(error));
+    dispatch(getWeatherError(error));
   }
 };
