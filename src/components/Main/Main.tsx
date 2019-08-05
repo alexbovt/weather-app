@@ -14,11 +14,9 @@ const Main: React.SFC = () => {
       </header>
       <div className="main-component__content container">
         <SearchPanel />
-        <hr className={"main-component-line"} />
         <Weather />
       </div>
       <footer className={"main-component__footer"}>
-        <div> 2019 </div>
         <div className={"main-component__footer-links"}>
           <a href="https://github.com/alexbovt" target="_blank">
             <i className="fa fa-github" aria-hidden="true" />

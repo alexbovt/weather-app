@@ -58,7 +58,7 @@ export const getWeatherByCity = (city: string) => async (
         wind: { speed, deg },
         visibility,
         timezone,
-        weather: { main, icon }
+        weather: responseWather
       } = await response.data;
 
       const weather = {
@@ -67,7 +67,7 @@ export const getWeatherByCity = (city: string) => async (
         wind: { speed, deg },
         visibility,
         timezone,
-        weather: { main, icon }
+        weather: { main: responseWather[0].main, icon: responseWather[0].icon }
       } as Weather;
       dispatch(getCitySuccess(`${name}, ${country}`));
       dispatch(getWeatherSuccess(weather));
